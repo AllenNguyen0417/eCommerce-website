@@ -46,4 +46,18 @@ public class ProductController {
         }
     }
 
+    @PutMapping("/updateproduct")
+    public ResponseEntity<String> updateProduct(String upc, @RequestBody Product product) {
+        Status stt = productService.updateProduct(product);
+
+        if (stt == Status.SUCCESS) {
+            return ResponseEntity.status(HttpStatus.OK).body("Product Updated Successfully!");
+        }
+        else if (stt == Status.PRODUCT_NOT_FOUND) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product with upc = " + product.getUpc() + " Not Found!");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 }
