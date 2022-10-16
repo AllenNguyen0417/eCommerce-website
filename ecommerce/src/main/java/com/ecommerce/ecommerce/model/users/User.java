@@ -13,19 +13,19 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer userId;
+    private Integer userId;
     @NotBlank
-    String username;
+    private String username;
     @NotBlank
-    String email;
+    private String email;
     @NotBlank
-    String firstName;
+    private String firstName;
     @NotBlank
-    String lastName;
+    private String lastName;
     @NotBlank
-    String password;
+    private String password;
     @NotBlank
-    String phoneNumber;
+    private String phoneNumber;
 
     public User() {
     }

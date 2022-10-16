@@ -1,18 +1,17 @@
-package com.ecommerce.ecommerce.model.users;
+package com.ecommerce.ecommerce.service.users;
 
+import com.ecommerce.ecommerce.status.Status;
+import com.ecommerce.ecommerce.model.users.User;
+import com.ecommerce.ecommerce.repository.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
     UserRepository userRepository;
-
-    User user;
 
     public List<User> getUsers() {
         return userRepository.findAll();
