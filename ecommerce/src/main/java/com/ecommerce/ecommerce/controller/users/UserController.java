@@ -1,11 +1,9 @@
 package com.ecommerce.ecommerce.controller.users;
 
 
-import java.util.List;
-
-import com.ecommerce.ecommerce.model.users.Status;
+import com.ecommerce.ecommerce.status.Status;
 import com.ecommerce.ecommerce.model.users.User;
-import com.ecommerce.ecommerce.model.users.UserService;
+import com.ecommerce.ecommerce.service.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
