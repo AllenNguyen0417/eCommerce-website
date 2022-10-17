@@ -47,11 +47,25 @@ public class ProductController {
     }
 
     @PutMapping("/updateproduct")
-    public ResponseEntity<String> updateProduct(String upc, @RequestBody Product product) {
+    public ResponseEntity<String> updateProduct(@RequestBody Product product) {
         Status stt = productService.updateProduct(product);
 
         if (stt == Status.SUCCESS) {
             return ResponseEntity.status(HttpStatus.OK).body("Product Updated Successfully!");
+        }
+        else if (stt == Status.PRODUCT_NOT_FOUND) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product with upc = " + product.getUpc() + " Not Found!");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @DeleteMapping("/deleteproduct")
+    public ResponseEntity<String> deleteProduct(@RequestBody Product product) {
+        Status stt = productService.deleteProduct(product);
+        if (stt == Status.SUCCESS) {
+            return ResponseEntity.status(HttpStatus.OK).body("Product Deleted Successfully!");
         }
         else if (stt == Status.PRODUCT_NOT_FOUND) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product with upc = " + product.getUpc() + " Not Found!");
