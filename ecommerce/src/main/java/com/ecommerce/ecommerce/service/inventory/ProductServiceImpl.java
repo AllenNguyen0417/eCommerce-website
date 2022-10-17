@@ -95,6 +95,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Status deleteProduct(Product product) {
-        return null;
+        Product prod = productRepository.findByUpc(product.getUpc());
+        if (prod == null) {
+            return Status.PRODUCT_NOT_FOUND;
+        }
+        productRepository.delete(prod);
+        return Status.SUCCESS;
     }
 }
