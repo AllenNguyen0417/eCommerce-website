@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import React from "react";
 import Container from "./Container";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Fab from "@mui/material/Fab";
-import EditIcon from "@mui/icons-material/Edit";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 export function Inventory() {
   const triggerText = "Create Product";
-
+  const url = "http://localhost:8080/api/inventory/products";
+  const [product, setProduct] = useState(null);
   const onSubmit = async (event) => {
     const productData = new FormData();
     productData.append("upc", event.target.upc.value);
@@ -35,25 +35,6 @@ export function Inventory() {
     }
   };
 
-  const OnClickDelete = (event) => {
-    console.log("hello");
-    // const upcDelete = new FormData();
-    // try {
-    //   // make axios post request
-    //   const response = await axios({
-    //     method: "post",
-    //     url: "http://localhost:8080/api/inventory/createproduct",
-    //     data: productData,
-    //     headers: { "Content-Type": "application/json" },
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
-
-  const url = "http://localhost:8080/api/inventory/products";
-  const [product, setProduct] = useState(null);
-
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/inventory/products")
@@ -61,6 +42,28 @@ export function Inventory() {
         setProduct(response.data);
       });
   }, [url]);
+
+  const onDeleteProduct = (itemUpc, event) => {
+    confirmAlert({
+      title: "Confirm to submit",
+      message: "Are you sure to delete this product?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            window.location.reload();
+            axios.delete("http://localhost:8080/api/inventory/deleteproduct", {
+              data: { upc: itemUpc },
+              headers: {},
+            });
+          },
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
+  };
 
   if (product) {
     return (
@@ -96,14 +99,13 @@ export function Inventory() {
                   <img src={item.imageUrl} height={100} width={100} />
                 </td>
                 <td>
-                  <IconButton aria-label="delete" size="large">
-                    <DeleteIcon fontSize="inherit" />
-                  </IconButton>
-                  <IconButton aria-label="delete" size="large">
-                    <Fab size="small" color="secondary" aria-label="add">
-                      <EditIcon />
-                    </Fab>
-                  </IconButton>
+                  <EditOutlined />
+                  <DeleteOutlined
+                    onClick={() => {
+                      onDeleteProduct(item.upc);
+                    }}
+                    style={{ color: "red", marginLeft: 10 }}
+                  />
                 </td>
               </tr>
             ))}
